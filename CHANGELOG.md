@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/wyattjoh/astro-cache/compare/v2.0.0...v2.1.0) (2026-01-29)
+
+
+### Features
+
+* add devCaching option to disable cache in dev mode ([d7b13e7](https://github.com/wyattjoh/astro-cache/commit/d7b13e78e54863169f9d75cf50349b99283f3fef))
+
 # [2.0.0](https://github.com/wyattjoh/astro-cache/compare/v1.0.0...v2.0.0) (2026-01-29)
 
 
