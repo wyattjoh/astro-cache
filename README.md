@@ -37,10 +37,10 @@ The integration registers the following environment variables via Astro's `env` 
 
 ## API
 
-Import the cache utilities from `@wyattjoh/astro-cache/cache.js`:
+Import the cache utilities from `@wyattjoh/astro-cache/cache`:
 
 ```ts
-import { swr, memo, clearAllCaches } from "@wyattjoh/astro-cache/cache.js";
+import { swr, memo, clearAllCaches } from "@wyattjoh/astro-cache/cache";
 ```
 
 ### `swr(fn, options)`

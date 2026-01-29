@@ -20,7 +20,7 @@
   },
   "exports": {
     ".": "./dist/index.js",
-    "./cache.js": "./dist/cache.js",
+    "./cache": "./dist/cache.js",
     "./package.json": "./package.json"
   },
   "files": [
