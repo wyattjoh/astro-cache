@@ -1,6 +1,7 @@
 {
   "name": "@wyattjoh/astro-cache",
   "version": "0.0.0-development",
+  "description": "Astro integration providing disk-backed caching utilities with stale-while-revalidate and memoization support",
   "type": "module",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
