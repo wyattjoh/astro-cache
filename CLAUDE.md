@@ -22,14 +22,15 @@ Pre-commit hook (via Husky) runs lint, test, and typecheck automatically.
 
 Source files in `src/`:
 
-- **`index.ts`** — The Astro integration entry point. Exports `astroCache()` which hooks into `astro:config:setup` to register `CACHE_DIR`, `MIN_TIME_TO_STALE`, and `MAX_TIME_TO_LIVE` env vars via Astro's `envField` helpers.
-- **`cache.ts`** — Core cache utilities. `swr()` wraps async functions with stale-while-revalidate caching backed by flat-cache for disk persistence. `memo()` provides simple memoization with optional disk persistence. `clearAllCaches()` clears all registered caches.
-- **`cache.test.ts`** — Test suite for all cache utilities using Bun's test runner. Mocks `astro:env/server` to provide env vars in test context.
+- **`index.ts`** — The Astro integration entry point. Exports `astroCache(options?)` which hooks into `astro:config:setup` to register env vars via Astro's `envField` helpers. Accepts an optional `{ devCaching?: boolean }` option to control whether caching is active during `astro dev` (defaults to disabled). Sets `ASTRO_CACHE_ENABLED` based on the command and option.
+- **`cache.ts`** — Core cache utilities. `swr()` and `memo()` check `ASTRO_CACHE_ENABLED` and become transparent passthroughs when disabled. Otherwise, `swr()` wraps async functions with stale-while-revalidate caching backed by flat-cache for disk persistence, and `memo()` provides simple memoization with optional disk persistence. `clearAllCaches()` clears all registered caches.
+- **`cache.test.ts`** — Test suite for cache utilities with caching enabled. Mocks `astro:env/server` with `ASTRO_CACHE_ENABLED: true`.
+- **`cache-disabled.test.ts`** — Test suite verifying passthrough behavior when `ASTRO_CACHE_ENABLED: false`.
 
 ## Key Design Decisions
 
 - The integration uses `envField` helpers from `astro/config` with `access: "secret"` to keep cache config server-only.
-- `cache.ts` imports `CACHE_DIR`, `MIN_TIME_TO_STALE`, and `MAX_TIME_TO_LIVE` from the `astro:env/server` virtual module.
+- `cache.ts` imports `ASTRO_CACHE_ENABLED`, `CACHE_DIR`, `MIN_TIME_TO_STALE`, and `MAX_TIME_TO_LIVE` from the `astro:env/server` virtual module. When `ASTRO_CACHE_ENABLED` is `false`, `swr()` and `memo()` skip all cache setup and return passthrough wrappers.
 - `--packages external` in the bun build step externalizes `astro:env/server`, `flat-cache`, and `stale-while-revalidate-cache`.
 - Separate entrypoint `./cache.js` keeps integration config and cache utilities independently importable.
 

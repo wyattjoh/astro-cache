@@ -6,6 +6,7 @@ import { join } from "node:path";
 const cacheDir = mkdtempSync(join(tmpdir(), "cache-test-"));
 
 mock.module("astro:env/server", () => ({
+  ASTRO_CACHE_ENABLED: true,
   ASTRO_CACHE_DIR: cacheDir,
   ASTRO_CACHE_MIN_TIME_TO_STALE: 1000 * 60 * 30, // 30 minutes
   ASTRO_CACHE_MAX_TIME_TO_LIVE: 1000 * 60 * 60 * 24 * 7, // 7 days

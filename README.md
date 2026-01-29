@@ -27,13 +27,27 @@ export default defineConfig({
 });
 ```
 
+### Options
+
+| Option        | Type      | Default | Description                                      |
+| ------------- | --------- | ------- | ------------------------------------------------ |
+| `devCaching`  | `boolean` | `false` | Enable caching during `astro dev`. When omitted or `false`, `swr()` and `memo()` become transparent passthroughs in dev mode so you always see fresh data. Caching is always active during `build` and `preview`. |
+
+```ts
+// Enable caching in dev mode
+astroCache({ devCaching: true });
+```
+
+### Environment Variables
+
 The integration registers the following environment variables via Astro's `env` schema (all server-only, with sensible defaults):
 
-| Variable                       | Type     | Default                            | Description                                |
-| ------------------------------ | -------- | ---------------------------------- | ------------------------------------------ |
-| `ASTRO_CACHE_DIR`              | `string` | `node_modules/.cache/astro-cache`  | Directory for flat-cache disk persistence  |
-| `ASTRO_CACHE_MIN_TIME_TO_STALE`| `number` | `1800000` (30 min)                 | SWR: min ms before data is considered stale |
-| `ASTRO_CACHE_MAX_TIME_TO_LIVE` | `number` | `604800000` (7 days)               | SWR: max ms before data must be refetched  |
+| Variable                       | Type      | Default                            | Description                                |
+| ------------------------------ | --------- | ---------------------------------- | ------------------------------------------ |
+| `ASTRO_CACHE_ENABLED`          | `boolean` | `true` (`false` in dev)            | Whether caching is active (set via `devCaching` option) |
+| `ASTRO_CACHE_DIR`              | `string`  | `node_modules/.cache/astro-cache`  | Directory for flat-cache disk persistence  |
+| `ASTRO_CACHE_MIN_TIME_TO_STALE`| `number`  | `1800000` (30 min)                 | SWR: min ms before data is considered stale |
+| `ASTRO_CACHE_MAX_TIME_TO_LIVE` | `number`  | `604800000` (7 days)               | SWR: max ms before data must be refetched  |
 
 ## API
 
