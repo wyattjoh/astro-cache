@@ -9,7 +9,13 @@ import { createStaleWhileRevalidateCache } from "stale-while-revalidate-cache";
 
 const FLAT_CACHE_TTL = ASTRO_CACHE_MAX_TIME_TO_LIVE * 2; // GC backstop
 
-type Clearable = { clear(): void };
+/**
+ * An object whose cached data can be cleared by calling {@link clear}.
+ */
+type Clearable = {
+  /** Removes all entries from this cache. */
+  clear(): void;
+};
 
 const caches: Clearable[] = [];
 
