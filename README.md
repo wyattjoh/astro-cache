@@ -71,6 +71,9 @@ const getUser = swr(
 );
 
 const user = await getUser("123");
+
+// Clear only this cache:
+getUser.clear();
 ```
 
 **Options:**
@@ -91,6 +94,9 @@ const getConfig = memo(
 );
 
 const config = await getConfig();
+
+// Clear only this cache:
+getConfig.clear();
 ```
 
 **Options:**
@@ -107,7 +113,23 @@ Clears all caches created by `swr` and `memo`.
 clearAllCaches();
 ```
 
-Both `swr` and `memo` return functions with a `.clear()` method to clear individual caches.
+### Clearing Individual Caches
+
+Both `swr` and `memo` return functions with a `.clear()` method that removes all entries from that specific cache (including its disk-persisted data). Use this when you need to invalidate a single cache without affecting others.
+
+```ts
+const getUser = swr(async (id: string) => { /* ... */ }, { name: "users" });
+const getConfig = memo(async () => { /* ... */ }, { name: "config" });
+
+// Clear only the users cache:
+getUser.clear();
+
+// Clear only the config cache:
+getConfig.clear();
+
+// Or clear everything at once:
+clearAllCaches();
+```
 
 ## License
 
