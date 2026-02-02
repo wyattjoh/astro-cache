@@ -17,6 +17,26 @@ type Clearable = {
   clear(): void;
 };
 
+/** Options for {@link swr}. */
+export type SWROptions = {
+  /** Unique cache identifier used as the flat-cache ID. */
+  name: string;
+  /** LRU size limit. `0` or omitted means unlimited. */
+  max?: number;
+};
+
+/** Options for {@link memo}. */
+export type MemoOptions = {
+  /** Unique cache identifier */
+  name: string;
+  /** LRU size limit. `0` or omitted means unlimited. */
+  max?: number;
+  /** Time-to-live in ms. Defaults to `ASTRO_CACHE_MIN_TIME_TO_STALE`. */
+  ttl?: number;
+  /** Write cache to disk. Defaults to `true`. */
+  persist?: boolean;
+};
+
 const caches: Clearable[] = [];
 
 function deriveKey(args: unknown[]): string {
@@ -33,14 +53,12 @@ function deriveKey(args: unknown[]): string {
  *
  * @param fn - The async function to cache.
  * @param options - Cache configuration.
- * @param options.name - Unique cache identifier used as the flat-cache ID.
- * @param options.max - LRU size limit. `0` or omitted means unlimited.
  * @returns A cached version of `fn` with a `.clear()` method.
  */
 // biome-ignore lint/suspicious/noExplicitAny: generic variadic args
 export function swr<Args extends any[], V>(
   fn: (...args: Args) => Promise<V>,
-  options: { name: string; max?: number }
+  options: SWROptions
 ): ((...args: Args) => Promise<V>) & Clearable {
   if (!ASTRO_CACHE_ENABLED) {
     return Object.assign((...args: Args) => fn(...args), {
@@ -107,16 +125,12 @@ export function swr<Args extends any[], V>(
  *
  * @param fn - The async function to cache.
  * @param options - Cache configuration.
- * @param options.name - Unique cache identifier used as the flat-cache ID.
- * @param options.max - LRU size limit. `0` or omitted means unlimited.
- * @param options.ttl - Time-to-live in ms. Defaults to `ASTRO_CACHE_MIN_TIME_TO_STALE`.
- * @param options.persist - Write cache to disk. Defaults to `true`.
  * @returns A cached version of `fn` with a `.clear()` method.
  */
 // biome-ignore lint/suspicious/noExplicitAny: generic variadic args
 export function memo<Args extends any[], V>(
   fn: (...args: Args) => Promise<V>,
-  options: { name: string; max?: number; ttl?: number; persist?: boolean }
+  options: MemoOptions
 ): ((...args: Args) => Promise<V>) & Clearable {
   if (!ASTRO_CACHE_ENABLED) {
     return Object.assign((...args: Args) => fn(...args), {
