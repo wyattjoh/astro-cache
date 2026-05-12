@@ -14,7 +14,7 @@ Astro integration providing disk-backed caching utilities (`@wyattjoh/astro-cach
 - **Lint**: `bun run lint` — runs Biome (`biome check .`)
 - **Lint fix**: `bun run lint:fix` — runs Biome with auto-fix
 - **Format**: `bun run format` — runs Biome formatter
-- **Release**: `bun run release` — runs semantic-release (CI only, uses `.releaserc.cjs`)
+- **Release**: managed by [release-please](https://github.com/googleapis/release-please) in `.github/workflows/release.yml`. Conventional commits on `main` open or update a release PR; merging it tags, creates the GitHub release, and publishes to npm with provenance. Config lives in `release-please-config.json` and `.release-please-manifest.json`.
 
 Pre-commit hook (via Husky) runs lint, test, and typecheck automatically.
 
@@ -41,19 +41,17 @@ Source files in `src/`:
 
 ## Commit Messages
 
-This project uses `semantic-release` with the Angular preset (`.releaserc.cjs`), so commit message types directly control versioning:
+This project uses [release-please](https://github.com/googleapis/release-please) with the `node` release type, so conventional commit types on `main` control versioning:
 
 | Type / Pattern | Release |
 |---|---|
 | `feat:` | **minor** |
 | `fix:` | **patch** |
-| `refactor:` | **patch** |
-| `style:` | **patch** |
-| `types:` | **patch** |
-| `docs(README):` | **patch** |
-| `revert:` (reverts) | **patch** |
+| `perf:` | **patch** |
 | `BREAKING CHANGE` footer or `!` suffix (e.g. `feat!:`) | **major** |
-| `chore`, `ci`, `test`, `build`, `perf`, `docs` (without `README` scope) | no release |
+| `chore`, `ci`, `test`, `build`, `docs`, `style`, `refactor` | no release |
+
+Use `Release-As: x.y.z` in a commit footer to force a specific version.
 
 ## Build Output
 
